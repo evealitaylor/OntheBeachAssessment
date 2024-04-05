@@ -2,24 +2,23 @@ import React, {useState, useReducer} from 'react';
 
 import './Hotel.css'
 
-import SortAlphabeticalIcon from '../Images/SortAlphabeticalIcon.svg'
-import SortAlphabeticalSelectedIcon from '../Images/SortAlphabeticalSelectedIcon.svg'
+import SortAlphabeticalIcon from '../Images/SortAlphabeticalIcon.png'
+import SortAlphabeticalSelectedIcon from '../Images/SortAlphabeticalSelectedIcon.png'
 import SortPriceIcon from '../Images/SortPriceIcon.svg'
 import SortPriceSelectedIcon from '../Images/SortPriceSelectedIcon.svg'
 import SortRatingIcon from '../Images/SortRatingIcon.svg'
 import SortRatingSelectedIcon from '../Images/SortRatingSelectedIcon.svg'
-import StarRatingIcon from '../Images/StarRatingIcon.svg'
 
 export default function Hotel() {
 
-    const {sortHotelItem, setSortHotelItem} = useState("priceSort");
-
     // put a use reducer here for these
-    const {alphabeticalSelect, setAlphabeticalSelect} = useState(false);
-    const {priceSelect, setPriceSelect} = useState(true);
-    const {ratingSelect, setRatingSelect} = useState(false);
+    const [alphabeticalSelect, setAlphabeticalSelect] = useState(false);
+    const [priceSelect, setPriceSelect] = useState(true);
+    const [ratingSelect, setRatingSelect] = useState(false);
 
-    const {overviewOpen, setOverviewOpen} = useState(false);
+    const [sortedHotelList, setSortedHotelList] = useState([]);
+
+    const [overviewOpen, setOverviewOpen] = useState(false);
 
     const hotelList = [
         {
@@ -33,7 +32,7 @@ export default function Hotel() {
             date: "3rd July 2019",
             duration: "7 days",
             departure: "East Midlands",
-            price: "1,136.50",
+            price: 1136.50,
             overview: "Located on the coast of Tenerife, between Playa del Duque and Playa de Fanabe, this hotel offers gourmet dining, exclusive lavish spas, magnificent suites with spectacular views and a personal butler or concierge service to meet all of your needs."
         },
         {
@@ -47,7 +46,7 @@ export default function Hotel() {
             date: "27th May 2019",
             duration: "7 days",
             departure: "Liverpool",
-            price: "696.80",
+            price: 696.80,
             overview: "The Hotel Aguamarina Golf has an exceptional location in the south of Tenerife, overlooking the Atlantic Ocean. It is situated between the Golf del Sur and the Amarillo Golf courses, and is an ideal hotel for families, couples and groups who are looking for a holiday full of sport, sun and sea."
         },
         {
@@ -61,72 +60,106 @@ export default function Hotel() {
             date: "3rd July 2019",
             duration: "7 days",
             departure: "Manchester",
-            price: "499.99",
+            price: 499.99,
             overview: "What do you get when you combine comfortable rooms, located in the heart of the action and all for a budget-friendly price? A very, very good holiday. That's what."
         }
     ]
 
-    const sortHotels = (event) => {
-        if (sortHotelItem == "alphabeticalSort") {
+    const sortHotelAlphabetical = () => {
         
         setAlphabeticalSelect(true)
         setPriceSelect(false)
         setRatingSelect(false)
 
-        hotelList.sort(function(a, b){return a.name - b.name})
+        const sortedAlphabetical = [...hotelList].sort(function(a, b){
+            if (a.name < b.name) {
+                return -1
+            }
+            if (a.name > b.name) {
+                return 1
+            }
+            return 0
+        })
 
-        } else if (sortHotelItem == "priceSort") {
+        setSortedHotelList(sortedAlphabetical)
+    }
+
+    const sortHotelPrice = () => {
 
         setPriceSelect(true)
         setAlphabeticalSelect(false)
         setRatingSelect(false)
 
-        hotelList.sort(function(a, b){return a.price - b.price})
+        const sortedPrice = [...hotelList].sort(function(a, b){
+            if (a.price < b.price) {
+                return -1
+            }
+            if (a.price > b.price) {
+                return 1
+            }
+            return 0
+        })
 
-        } else if (sortHotelItem == "ratingSort") {
+        setSortedHotelList(sortedPrice)
+    }
+
+    const sortHotelRating = () => {
 
         setRatingSelect(true)
         setAlphabeticalSelect(false)
         setPriceSelect(false)
 
-        hotelList.sort(function(a, b){return a.rating - b.rating})
-        
-        }
+        const sortedRating = [...hotelList].sort(function(a, b){
+            if (a.rating > b.rating) {
+                return -1
+            }
+            if (a.rating < b.rating) {
+                return 1
+            }
+            return 0
+        })
+
+        setSortedHotelList(sortedRating)
+    }
+
+    const displayOverview = () => {
+        setOverviewOpen(true)
+    }
+
+    const hideOverview = () => {
+        setOverviewOpen(false)
     }
 
   return (
     <div className='content-container'>
         <div>
-            <div 
-                className={alphabeticalSelect ? "sort-button-selected" : "sort-button"}
+            <div
+                className={alphabeticalSelect === true ? "sort-button-selected" : "sort-button"}
                 onClick={(event)=> {
-                    setSortHotelItem("alphabeticalSort")
-                    sortHotels(event)
+                    sortHotelAlphabetical()
                 }}>
                 <p>sort <b>alphabetically</b></p>
                 <img src={alphabeticalSelect ? SortAlphabeticalSelectedIcon : SortAlphabeticalIcon} alt="Sort Alphabetical Icon"></img>
             </div>
             <div 
-                className={priceSelect ? "sort-button-selected" : "sort-button"}
+                className={priceSelect === true ? "sort-button-selected" : "sort-button"}
                 onClick={(event)=> {
-                    setSortHotelItem("priceSort")
-                    sortHotels(event)
+                    sortHotelPrice()
                 }}>
                 <p>sort by <b>price</b></p>
                 <img src={priceSelect ? SortPriceSelectedIcon : SortPriceIcon} alt="Sort Price Icon"></img>
             </div>
             <div 
-                className={ratingSelect ? "sort-button-selected" : "sort-button"} 
+                className={ratingSelect === true ? "sort-button-selected" : "sort-button"} 
                 onClick={(event)=> {
-                    setSortHotelItem("ratingSort")
-                    sortHotels(event)
+                    sortHotelRating()
                 }}>
                 <p>sort by <b>star rating</b></p>
                 <img src={ratingSelect ? SortRatingSelectedIcon : SortRatingIcon} alt="Sort Rating Icon"></img>
             </div>
         </div>
         <div>
-                {hotelList.map((item, index) => (
+                {sortedHotelList.map((item, index) => (
                     <div key={index} className='hotel-item-container'>
                         <img className='hotel-item-image' src={require("../Images/" + item.image + ".png")} alt={item.name}></img>
                         <div className='hotel-item-content'>
@@ -141,6 +174,24 @@ export default function Hotel() {
                             <div className='hotel-item-price-box'>
                                 <div>Book Now</div>
                                 <div className='hotel-item-price'>&pound;{item.price}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                            {{overviewOpen} === false ? (
+                                <div>
+                                    <button onClick={displayOverview}>
+                                        Read More
+                                    </button>
+                                </div>
+                            ) : (
+                                <div>
+                                    <button onClick={hideOverview}>
+                                        Read Less
+                                        </button>
+                                    {item.overview}
+                                </div>
+                            )}
                             </div>
                         </div>
                     </div>
