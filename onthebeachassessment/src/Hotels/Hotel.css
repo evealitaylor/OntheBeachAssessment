@@ -1,5 +1,8 @@
-.sort-buttons.container {
-    margin: 80px 80px 0 110px;
+.content-container {
+    display: flex;
+    flex-direction: row;
+    padding: 80px 110px 80px 110px;
+    gap: 80px;
 }
 
 .sort-button {
@@ -7,20 +10,51 @@
     color: #1E307A;
     width: 300px;
     height: 60px;
+    border-top: 0.5px solid #1E307A;
+    border-bottom: 0.5px solid #1E307A;
+    text-align: left;
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.hotels-list-container {
-    margin: 80px 110px 0 0;
+.sort-button-selected {
+    background-color: #1E307A;
+    color: #ffffff;
+}
+
+.sort-button img {
+    width: 25px;
+    height: 25px;
 }
 
 .hotel-item-container {
     width: 800px;
-    height: 420px;
-    margin-bottom: 30px
+    height: 275px;
+    margin-bottom: 30px;
+    background-color:#ffffff;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+}
+
+.hotel-item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.hotel-item-image {
+    width: 495px;
+    height: 275px;
 }
 
 .hotel-item-name {
     font-size: 14px;
+    font-weight: 600;
     color: #1E307A;
 }
 
@@ -29,20 +63,52 @@
     color: #868686;
 }
 
-.hotel-item-star-rating {
+.hotel-item-rating {
+    height: 20px;
+}
+
+.hotel-item-rating img {
     height: 20px;
 }
 
 .hotel-item-occupancy {
     font-size: 12px;
+    color: #383838;
 }
 
 .hotel-item-date-duration {
     font-size: 12px;
+    color: #383838;
+}
+
+.hotel-item-departure {
+    font-size: 12px;
+    color: #383838;
+}
+
+.hotel-item-price-box {
+    background-color: #F8DD4B;
+    border-radius: 3px;
+    width: 265px;
+    height: 70px;
+    text-align: center;
+    color: #1E307A;
+    font-size: 12px;
+    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .hotel-item-price {
-    background-color: #F8DD4B;
-    border-radius: 3px;
+    font-size: 26px;
+    font-weight: 600;
+}
 
+.hotel-item-overview {
+    color: #1E307A;
+    font-size: 12px;
+}
+
+.hotel-item-overview-text {
+    color: #383838;
 }
