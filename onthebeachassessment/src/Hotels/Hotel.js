@@ -1,4 +1,4 @@
-import React, {useState, useReducer} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './Hotel.css'
 
@@ -8,10 +8,13 @@ import SortPriceIcon from '../Images/SortPriceIcon.svg'
 import SortPriceSelectedIcon from '../Images/SortPriceSelectedIcon.svg'
 import SortRatingIcon from '../Images/SortRatingIcon.svg'
 import SortRatingSelectedIcon from '../Images/SortRatingSelectedIcon.svg'
+import OverviewButtonDownIcon from '../Images/OverviewButtonDownIcon.svg'
+import OverviewButtonRightIcon from '../Images/OverviewButtonRightIcon.svg'
 
 export default function Hotel() {
 
-    // put a use reducer here for these
+    const [isLoading, setIsLoading] = useState(false);
+
     const [alphabeticalSelect, setAlphabeticalSelect] = useState(false);
     const [priceSelect, setPriceSelect] = useState(true);
     const [ratingSelect, setRatingSelect] = useState(false);
@@ -22,6 +25,7 @@ export default function Hotel() {
 
     const hotelList = [
         {
+            id: 1,
             name: "Iberostar Grand Salome",
             location: "Costa Adeje, Tenerife",
             image: "hotel-image-1",
@@ -36,6 +40,7 @@ export default function Hotel() {
             overview: "Located on the coast of Tenerife, between Playa del Duque and Playa de Fanabe, this hotel offers gourmet dining, exclusive lavish spas, magnificent suites with spectacular views and a personal butler or concierge service to meet all of your needs."
         },
         {
+            id: 2,
             name: "Aguamarina Golf Hotel",
             location: "Costa Adeje, Tenerife",
             image: "hotel-image-2",
@@ -50,6 +55,7 @@ export default function Hotel() {
             overview: "The Hotel Aguamarina Golf has an exceptional location in the south of Tenerife, overlooking the Atlantic Ocean. It is situated between the Golf del Sur and the Amarillo Golf courses, and is an ideal hotel for families, couples and groups who are looking for a holiday full of sport, sun and sea."
         },
         {
+            id: 3,
             name: "Las Piramides Resort",
             location: "Costa Adeje, Tenerife",
             image: "hotel-image-3",
@@ -122,13 +128,23 @@ export default function Hotel() {
         setSortedHotelList(sortedRating)
     }
 
-    const displayOverview = () => {
-        setOverviewOpen(true)
+    const displayOverview = (index) => {
+        setOverviewOpen(!overviewOpen)
     }
 
-    const hideOverview = () => {
-        setOverviewOpen(false)
-    }
+    useEffect(() => {
+        async function loadSortedHotelList() {
+            setIsLoading(true);
+            try {
+               sortHotelPrice();
+            } catch (error) {
+               console.error(error);
+            } finally {
+               setIsLoading(false);
+            }
+         }
+         loadSortedHotelList();
+    }, [])
 
   return (
     <div className='content-container'>
@@ -158,41 +174,46 @@ export default function Hotel() {
                 <img src={ratingSelect ? SortRatingSelectedIcon : SortRatingIcon} alt="Sort Rating Icon"></img>
             </div>
         </div>
-        <div>
+        <div className='hotel-list'>
                 {sortedHotelList.map((item, index) => (
-                    <div key={index} className='hotel-item-container'>
-                        <img className='hotel-item-image' src={require("../Images/" + item.image + ".png")} alt={item.name}></img>
-                        <div className='hotel-item-content'>
-                            <div className='hotel-item-name'>{item.name}</div>
-                            <div className='hotel-item-location'>{item.location}</div>
-                            <div className='hotel-item-rating'>
-                                <img src={require("../Images/StarRatingIcon" + item.rating + ".png")}></img>
-                            </div>
-                            <div className='hotel-item-occupancy'><b>{item.occupancy_adults}</b> Adults, <b>{item.occupancy_children}</b> children & <b>{item.occupancy_infants}</b> infants</div>
-                            <div className='hotel-item-date-duration'><b>{item.date}</b> for <b>{item.duration}</b></div>
-                            <div className='hotel-item-departure'>departing from <b>{item.departure}</b></div>
-                            <div className='hotel-item-price-box'>
-                                <div>Book Now</div>
-                                <div className='hotel-item-price'>&pound;{item.price}</div>
+                    <div key={index}>
+                        <div className='hotel-item-container'>
+                            <img className='hotel-item-image' src={require("../Images/" + item.image + ".png")} alt={item.name}></img>
+                            <div className='hotel-item-content'>
+                                <div className='hotel-item-name'>{item.name}</div>
+                                <div className='hotel-item-location'>{item.location}</div>
+                                <div className='hotel-item-rating'>
+                                    <img src={require("../Images/StarRatingIcon" + item.rating + ".png")}></img>
+                                </div>
+                                <div className='hotel-item-occupancy'>
+                                    <b>{item.occupancy_adults > 0 ? item.occupancy_adults : null}</b>{item.occupancy_adults === 1 ? " Adult" : item.occupancy_adults > 1 ? " Adults" : null}<b>{item.occupancy_children > 0 ? ", " + item.occupancy_children : null}</b>{item.occupancy_children === 1 ? " Child" : item.occupancy_children > 1 ? " Children" : null}<b>{item.occupancy_infants > 0 ? " & " + item.occupancy_infants : null}</b>{item.occupancy_infants === 1 ? " Infant" : item.occupancy_infants > 1 ? " Infants" : null}
+                                </div>
+                                <div className='hotel-item-date-duration'><b>{item.date}</b> for <b>{item.duration}</b></div>
+                                <div className='hotel-item-departure'>departing from <b>{item.departure}</b></div>
+                                <div className='hotel-item-price-box'>
+                                    <div className='hotel-item-price-box-label'>Book Now</div>
+                                    <div className='hotel-item-price'>&pound;{item.price}</div>
+                                </div>
                             </div>
                         </div>
                         <div>
-                            <div>
-                            {{overviewOpen} === false ? (
-                                <div>
-                                    <button onClick={displayOverview}>
-                                        Read More
-                                    </button>
-                                </div>
-                            ) : (
-                                <div>
-                                    <button onClick={hideOverview}>
-                                        Read Less
-                                        </button>
-                                    {item.overview}
-                                </div>
-                            )}
+                            <button 
+                                onClick={displayOverview}
+                                className='overview-display-button'>
+                                    <div>
+                                        <b>
+                                        {overviewOpen ? "Read less " : "Read more "}
+                                        </b>
+                                        about this hotel
+                                    </div>
+                                <img src={overviewOpen ? OverviewButtonDownIcon : OverviewButtonRightIcon}></img> 
+                                </button>
+                            {overviewOpen && (
+                            <div className='hotel-item-overview'>
+                                <h4>Overview</h4>
+                                <div className='hotel-item-overview-text'> {item.overview}</div>
                             </div>
+                                )}
                         </div>
                     </div>
                 ))}

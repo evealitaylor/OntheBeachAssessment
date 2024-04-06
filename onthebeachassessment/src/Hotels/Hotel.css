@@ -45,10 +45,14 @@
     height: 25px;
 }
 
+.hotel-list {
+    display: flex;
+    flex-direction: column;
+}
+
 .hotel-item-container {
     width: 800px;
     height: 275px;
-    margin-bottom: 30px;
     background-color:#ffffff;
     text-align: left;
     display: flex;
@@ -89,6 +93,10 @@
 .hotel-item-occupancy {
     font-size: 12px;
     color: #383838;
+    display: inline;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
 }
 
 .hotel-item-date-duration {
@@ -110,8 +118,12 @@
     color: #1E307A;
     font-size: 12px;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
+}
+
+.hotel-item-price-box-label {
+    padding-top: 10px;
 }
 
 .hotel-item-price {
@@ -119,9 +131,38 @@
     font-weight: 600;
 }
 
+.overview-display-button {
+    background-color: #ffffff;
+    color: #1E307A;
+    border: 0;
+    width: 242px;
+    height: 35px;
+    transform: translateY(-35px);
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.overview-display-button img {
+    width: 25px;
+    align-self: center;
+
+}
+
 .hotel-item-overview {
     color: #1E307A;
-    font-size: 12px;
+    font-size: 14px;
+    text-align: left;
+    background-color: #ffffff;
+    transform: translateY(-35px);
+    padding: 20px;
+}
+
+.hotel-item-overview h4 {
+    font-weight: 600;
+    margin-top: 0;
 }
 
 .hotel-item-overview-text {
