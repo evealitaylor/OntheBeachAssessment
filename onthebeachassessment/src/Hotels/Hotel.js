@@ -1,6 +1,18 @@
+// --------------------------------------------------
+// ----------- Import React Libraries
+// --------------------------------------------------
+
 import React, {useEffect, useState} from 'react';
 
+// --------------------------------------------------
+// ----------- Import CSS
+// --------------------------------------------------
+
 import './Hotel.css'
+
+// --------------------------------------------------
+// ----------- Import Images & Icons
+// --------------------------------------------------
 
 import SortAlphabeticalIcon from '../Images/SortAlphabeticalIcon.png'
 import SortAlphabeticalSelectedIcon from '../Images/SortAlphabeticalSelectedIcon.png'
@@ -11,18 +23,27 @@ import SortRatingSelectedIcon from '../Images/SortRatingSelectedIcon.svg'
 import OverviewButtonDownIcon from '../Images/OverviewButtonDownIcon.svg'
 import OverviewButtonRightIcon from '../Images/OverviewButtonRightIcon.svg'
 
+// --------------------------------------------------
+// ----------- Functions
+// --------------------------------------------------
+
 export default function Hotel() {
 
+    // Set Load state to sort price on load
     const [isLoading, setIsLoading] = useState(false);
 
+    // Sort by A-Z, price & rating use states
     const [alphabeticalSelect, setAlphabeticalSelect] = useState(false);
     const [priceSelect, setPriceSelect] = useState(true);
     const [ratingSelect, setRatingSelect] = useState(false);
 
+    // Array for sort functions to sort hotel list
     const [sortedHotelList, setSortedHotelList] = useState([]);
 
+    // Toggle hotel description/overview use state
     const [overviewOpen, setOverviewOpen] = useState(false);
 
+    // Hotels array
     const hotelList = [
         {
             id: 1,
@@ -71,6 +92,7 @@ export default function Hotel() {
         }
     ]
 
+    // Function to sort by A-Z
     const sortHotelAlphabetical = () => {
         
         setAlphabeticalSelect(true)
@@ -90,6 +112,7 @@ export default function Hotel() {
         setSortedHotelList(sortedAlphabetical)
     }
 
+    // Function to sort by hotel price (lowest to highest)
     const sortHotelPrice = () => {
 
         setPriceSelect(true)
@@ -109,6 +132,7 @@ export default function Hotel() {
         setSortedHotelList(sortedPrice)
     }
 
+    // Function to sort by hotel rating (highest to lowest)
     const sortHotelRating = () => {
 
         setRatingSelect(true)
@@ -128,10 +152,12 @@ export default function Hotel() {
         setSortedHotelList(sortedRating)
     }
 
+    // Function to toggle hotel description using onClick
     const displayOverview = (index) => {
         setOverviewOpen(!overviewOpen)
     }
 
+    // Use Effect for sorting by price on load
     useEffect(() => {
         async function loadSortedHotelList() {
             setIsLoading(true);
@@ -146,32 +172,36 @@ export default function Hotel() {
          loadSortedHotelList();
     }, [])
 
+// --------------------------------------------------
+// ----------- HTML
+// --------------------------------------------------
+
   return (
     <div className='content-container'>
         <div>
             <div
                 className={alphabeticalSelect === true ? "sort-button-selected" : "sort-button"}
-                onClick={(event)=> {
+                onClick={()=> {
                     sortHotelAlphabetical()
                 }}>
-                <p>sort <b>alphabetically</b></p>
-                <img src={alphabeticalSelect ? SortAlphabeticalSelectedIcon : SortAlphabeticalIcon} alt="Sort Alphabetical Icon"></img>
+                    <p>sort <b>alphabetically</b></p>
+                    <img src={alphabeticalSelect ? SortAlphabeticalSelectedIcon : SortAlphabeticalIcon} alt="Sort Alphabetical Icon"></img>
             </div>
             <div 
                 className={priceSelect === true ? "sort-button-selected" : "sort-button"}
-                onClick={(event)=> {
+                onClick={()=> {
                     sortHotelPrice()
                 }}>
-                <p>sort by <b>price</b></p>
-                <img src={priceSelect ? SortPriceSelectedIcon : SortPriceIcon} alt="Sort Price Icon"></img>
+                    <p>sort by <b>price</b></p>
+                    <img src={priceSelect ? SortPriceSelectedIcon : SortPriceIcon} alt="Sort Price Icon"></img>
             </div>
             <div 
                 className={ratingSelect === true ? "sort-button-selected" : "sort-button"} 
-                onClick={(event)=> {
+                onClick={()=> {
                     sortHotelRating()
                 }}>
-                <p>sort by <b>star rating</b></p>
-                <img src={ratingSelect ? SortRatingSelectedIcon : SortRatingIcon} alt="Sort Rating Icon"></img>
+                    <p>sort by <b>star rating</b></p>
+                    <img src={ratingSelect ? SortRatingSelectedIcon : SortRatingIcon} alt="Sort Rating Icon"></img>
             </div>
         </div>
         <div className='hotel-list'>
@@ -201,24 +231,21 @@ export default function Hotel() {
                                 onClick={displayOverview}
                                 className='overview-display-button'>
                                     <div>
-                                        <b>
-                                        {overviewOpen ? "Read less " : "Read more "}
-                                        </b>
+                                        <b>{overviewOpen ? "Read less " : "Read more "}</b>
                                         about this hotel
                                     </div>
-                                <img src={overviewOpen ? OverviewButtonDownIcon : OverviewButtonRightIcon}></img> 
+                                    <img src={overviewOpen ? OverviewButtonDownIcon : OverviewButtonRightIcon}></img> 
                                 </button>
-                            {overviewOpen && (
-                            <div className='hotel-item-overview'>
-                                <h4>Overview</h4>
-                                <div className='hotel-item-overview-text'> {item.overview}</div>
-                            </div>
+                                {overviewOpen && (
+                                    <div className='hotel-item-overview'>
+                                        <h4>Overview</h4>
+                                        <div className='hotel-item-overview-text'> {item.overview}</div>
+                                    </div>
                                 )}
                         </div>
                     </div>
                 ))}
         </div>
-        <div></div>
     </div>
   )
 }
